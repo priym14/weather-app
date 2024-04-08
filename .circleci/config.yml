@@ -3,15 +3,15 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest
-  steps:
-    - checkout
-    - run:
-       name: installing dependency
-       command: npm install
+    steps:
+      - checkout
+      - run:
+         name: installing dependency
+         command: npm install
 
-    - run:
-       name: building the application
-       command: npm start
+      - run:
+         name: building the application
+         command: npm start
 
 workflows:
   build_now:
