@@ -8,9 +8,9 @@ jobs:
        name: installing dependency
        command: npm install
 
-    -run:
-      name: building the application
-      command: npm start
+    - run:
+       name: building the application
+       command: npm start
 
 workflows:
   build_now:
