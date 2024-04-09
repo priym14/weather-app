@@ -27,7 +27,38 @@ jobs:
              sudo apt update -y
              sudo apt install python3-pip
              sudo pip3 install awsebcli --upgrade
-        - run: aws s3 sync ./build s3://react-weather-app-01
+        - run:
+           name: Creating and pushing docker image to docker hub
+           command: |
+             docker build . -t weather-app:latest
+             docker tag weather-app priyam14/weather-app:latest
+             docker login -u $dockerHubUser -p $dockerHubPass
+             docker push priyam14/weather-app:latest
+        - run:
+           name: Installing eksctl
+           command: |
+             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+             sudo mv /tmp/eksctl /usr/local/bin
+        - run :
+           name: Installing kubectl v1.29
+           command: |
+             curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/linux/amd64/kubectl
+             chmod +x ./kubectl
+             mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+             echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+      
+        - run:
+           name: Creating a EKS cluster
+           command: |
+             eksctl create cluster --name weather-app --region us-east-2 --node-type=t2.micro
+             aws eks update-kubeconfig --region us-east-2 --name weather-app
+
+        - run:
+           name: Deploying yaml files
+           command: |
+             kubectl apply -f eks/deployment.yml
+             kubectl apply -f eks/service.yml
+    
 
 workflows:
   build_and_deploy:
