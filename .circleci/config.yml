@@ -2,18 +2,33 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
+      - image: node:latest
     steps:
       - checkout
       - run:
-         name: installing dependency
-         command: npm install
+          name: Installing dependency & Creating build
+          command: npm install && npm run build
 
-      - run:
-         name: building the application
-         command: npm run
+  deploy:
+    build:
+      docker:
+        - image: ubuntu-22.04
+      steps:
+        - checkout
+        - run:
+           name: Installing AWSCLI
+          command: |
+            sudo apt update
+            sudo apt upgrade -y
+            sudo apt install python3-pip
+            sudo pip3 install awsebcli --upgrade
+        - run: aws s3 sync /build s3://react-weather-app-01
 
-workflows:
-  build_now:
+workflow:
+  build_and_deploy:
     jobs:
       - build
+      - deploy:
+         required:
+           - build
+
