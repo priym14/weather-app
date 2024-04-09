@@ -11,7 +11,7 @@ jobs:
 
       - run:
          name: building the application
-         command: npm start
+         command: npm run
 
 workflows:
   build_now:
