@@ -15,8 +15,9 @@ spec:
         app: weather-app
     spec:
       containers:
-        name: react-ctr
-        image: priyam14/weather-app:latest
-        ports:
-        - containerPort: 3000
+        - name: react-ctr
+          image: priyam14/weather-app:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3000  
 
