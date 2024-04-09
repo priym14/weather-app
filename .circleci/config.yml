@@ -46,7 +46,16 @@ jobs:
              chmod +x ./kubectl
              mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
              echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-      
+        - run:
+           name: Check Cluster Existence
+           command: |
+             if [ aws eks describe-cluster --name weather-app --region us-east-2]; then
+              echo "Cluster already exists, skipping creation."
+              export CLUSTER_EXISTS=true
+             else
+              echo "Cluster doesn't exist."
+              export CLUSTER_EXISTS=false
+             fi
         - run:
            name: Creating a EKS cluster
            command: |
