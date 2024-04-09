@@ -24,9 +24,8 @@ jobs:
         - run:
            name: Installing AWSCLI
            command: |
-             sudo apt update
-             sudo apt upgrade -y
-             s udo apt install python3-pip
+             sudo apt update -y
+             sudo apt install python3-pip
              sudo pip3 install awsebcli --upgrade
         - run: aws s3 sync /build s3://react-weather-app-01
 
