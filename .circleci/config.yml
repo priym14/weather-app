@@ -16,7 +16,7 @@ jobs:
 
   deploy:
       machine:
-        - image: ubuntu-22.04
+         image: ubuntu-22.04
       steps:
         - attach_workspace:
            at: .
