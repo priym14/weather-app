@@ -49,19 +49,13 @@ jobs:
         - run:
            name: Check Cluster Existence
            command: |
-             if [ aws eks describe-cluster --name weather-app --region us-east-2]; then
-              echo "Cluster already exists, skipping creation."
-              export CLUSTER_EXISTS=true
+             if kubectl get clusters weather-app; then
+              echo "cluster already exist"
              else
               echo "Cluster doesn't exist."
-              export CLUSTER_EXISTS=false
+              eksctl create cluster --name weather-app --region us-east-2 --node-type=t2.micro
+              aws eks update-kubeconfig --region us-east-2 --name weather-app
              fi
-        - run:
-           name: Creating a EKS cluster
-           command: |
-             eksctl create cluster --name weather-app --region us-east-2 --node-type=t2.micro
-             aws eks update-kubeconfig --region us-east-2 --name weather-app
-
         - run:
            name: Deploying yaml files
            command: |
