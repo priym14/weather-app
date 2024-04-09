@@ -18,6 +18,8 @@ jobs:
       machine:
         - image: ubuntu-22.04
       steps:
+        - attach_workspace:
+           at: .
         - checkout
         - run:
            name: Installing AWSCLI
@@ -28,7 +30,7 @@ jobs:
             sudo pip3 install awsebcli --upgrade
         - run: aws s3 sync /build s3://react-weather-app-01
 
-workflow:
+workflows:
   build_and_deploy:
     jobs:
       - build
