@@ -46,16 +46,17 @@ jobs:
              chmod +x ./kubectl
              mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
              echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-        - run:
-           name: creating EKS cluster
-           command: |   
-             eksctl create cluster --name weather-app --region us-east-1
-             aws eks update-kubeconfig --region us-east-1 --name weather-app
-        - run:
-           name: Deploying yaml files
-           command: |
-             kubectl apply -f eks/deployment.yml
-             kubectl apply -f eks/service.yml
+             eksctl delete custer --region us-east-1 --name weather-app
+             #- run:
+             #name: creating EKS cluster
+             #command: |   
+             #eksctl create cluster --name weather-app --region us-east-1
+             #aws eks update-kubeconfig --region us-east-1 --name weather-app
+             #- run:
+             #name: Deploying yaml files
+             #command: |
+             #kubectl apply -f eks/deployment.yml
+             #kubectl apply -f eks/service.yml
     
 
 workflows:
