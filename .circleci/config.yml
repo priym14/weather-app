@@ -46,28 +46,11 @@ jobs:
              chmod +x ./kubectl
              mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
              echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-             eksctl delete cluster --name weather-app --region us-east-2
-             #- run:
-             #name: Check Cluster Existence
-             #command: |
-             #if kubectl get cluster weather-app --region us-east-2; then
-             # echo "Cluster already exists, skipping creation."
-             #exit 0  # Exit successfully
-             #else
-             #echo "Cluster doesn't exist, proceeding with creation."
-             #eksctl create cluster --name weather-app --region us-east-2
-             #fi
-
-
-
-
-
-
-
-
-
-
-
+        - run:
+           name: creating EKS cluster
+           command: |   
+             eksctl create cluster --name weather-app --region us-east-1
+             aws eks update-kubeconfig --region us-east-1 --name weather-app
         - run:
            name: Deploying yaml files
            command: |
