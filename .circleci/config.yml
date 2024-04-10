@@ -46,7 +46,7 @@ jobs:
              chmod +x ./kubectl
              mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
              echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
-             eksctl delete custer --region us-east-1 --name weather-app
+             eksctl delete cluster --region us-east-1 --name weather-app
              #- run:
              #name: creating EKS cluster
              #command: |   
